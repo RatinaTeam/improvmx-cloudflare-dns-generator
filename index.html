@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImprovMX and Cloudflare DNS Records Generator</title>
+</head>
+<body>
+    <h2>ImprovMX and Cloudflare DNS Records Generator</h2>
+    <label for="domain">Enter Domain Name:</label>
+    <input type="text" id="domain" placeholder="example.com">
+    <button onclick="generateFile()">Generate .txt File</button>
+
+    <script>
+        function generateFile() {
+            const domain = document.getElementById("domain").value.trim();
+            if (!domain) {
+                alert("Please enter a domain name.");
+                return;
+            }
+
+            const content = `;;
+;; Domain:     ${domain}
+;; Exported:   ${new Date().toISOString()}
+;;
+;; This file is intended for use for informational and archival
+;; purposes ONLY and MUST be edited before use on a production
+;; DNS server.  In particular, you must:
+;;   -- update the SOA record with the correct authoritative name server
+;;   -- update the SOA record with the contact e-mail address information
+;;   -- update the NS record(s) with the authoritative name servers for this domain.
+;;
+;; For further information, please consult the BIND documentation
+;; located on the following website:
+;;
+;; http://www.isc.org/
+;;
+;; And RFC 1035:
+;;
+;; http://www.ietf.org/rfc/rfc1035.txt
+;;
+;; Please note that we do NOT offer technical support for any use
+;; of this zone data, the BIND name server, or any other third-party
+;; DNS software.
+;;
+;; Use at your own risk.
+;; SOA Record
+${domain} 3600 IN SOA ${domain} root.${domain} 2042060828 7200 3600 86400 3600
+;; MX Records
+${domain} 3600 IN MX 10 mx1.improvmx.com
+${domain} 3600 IN MX 20 mx2.improvmx.com
+;; TXT Records
+${domain} 3600 IN TXT "v=spf1 include:spf.improvmx.com ~all"
+;; CNAME Records
+dkimprovmx1._domainkey.${domain} 3600 IN CNAME dkimprovmx1.improvmx.com
+dkimprovmx2._domainkey.${domain} 3600 IN CNAME dkimprovmx2.improvmx.com
+_dmarc.${domain} 3600 IN TXT "v=DMARC1; p=none"
+`;
+
+            const blob = new Blob([content], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `${domain}_dns_records.txt`;
+            link.click();
+        }
+    </script>
+</body>
+</html>
