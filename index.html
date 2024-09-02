@@ -45,16 +45,16 @@
 ;;
 ;; Use at your own risk.
 ;; SOA Record
-${domain} 3600 IN SOA ${domain} root.${domain} 2042060828 7200 3600 86400 3600
+${domain} 1 IN SOA ${domain} root.${domain} 2042060828 7200 1 86400 3600
 ;; MX Records
-${domain} 3600 IN MX 10 mx1.improvmx.com
-${domain} 3600 IN MX 20 mx2.improvmx.com
+${domain} 1 IN MX 10 mx1.improvmx.com.
+${domain} 1 IN MX 20 mx2.improvmx.com.
 ;; TXT Records
-${domain} 3600 IN TXT "v=spf1 include:spf.improvmx.com ~all"
+${domain} 1 IN TXT "v=spf1 include:spf.improvmx.com ~all"
 ;; CNAME Records
-dkimprovmx1._domainkey.${domain} 3600 IN CNAME dkimprovmx1.improvmx.com
-dkimprovmx2._domainkey.${domain} 3600 IN CNAME dkimprovmx2.improvmx.com
-_dmarc.${domain} 3600 IN TXT "v=DMARC1; p=none"
+dkimprovmx1._domainkey.${domain} 1 IN CNAME dkimprovmx1.improvmx.com.
+dkimprovmx2._domainkey.${domain} 1 IN CNAME dkimprovmx2.improvmx.com.
+_dmarc.${domain} 1 IN TXT "v=DMARC1; p=none;"
 `;
 
             const blob = new Blob([content], { type: "text/plain" });
